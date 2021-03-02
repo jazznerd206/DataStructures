@@ -14,9 +14,9 @@ class DoubleLinkedList {
     }
 
     // INSERT AT TAIL
-    push(data) {
+    push(val) {
         // create new node
-        const node = new Node(data);
+        const node = new Node(val);
         // if list has no members
         if(this.size === 0) {
             this.head  = node;
@@ -33,9 +33,9 @@ class DoubleLinkedList {
     }
 
     // INSERT AT HEAD
-    unshift(data) {
+    unshift(val) {
         // create new node
-        const node = new Node(data);
+        const node = new Node(val);
         // if list has no members, make new node head and tail
         if(this.size === 0) {
             this.head  = node;
@@ -52,21 +52,21 @@ class DoubleLinkedList {
     }
 
     // INSERT AT INDEX
-    insert(data, index) {
+    insert(val, index) {
         // if the index is less than 0 or greater than the size of the list
         if(index < 0 || index > this.size) {
             return null;
         }
         // else if the index is 0, insert at the head
         else if (index === 0) {
-            return this.unshift(data);
+            return this.unshift(val);
         }
         // else if the index equals the size of the list, insert at tail
         else if (index = this.size) {
-            return this.push(data);
+            return this.push(val);
         }
         // INSERT AT INDEX
-        const node = new Node(data);
+        const node = new Node(val);
         const newPreviousNode = this.get(index - 1);
         const newNextNode = newPreviousNode.next;
 
