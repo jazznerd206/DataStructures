@@ -4,7 +4,7 @@
 * Linked Lists
 * Stack
 * Queue
-COMING SOON:
+#### COMING SOON:
 * Heap
 * Binary Tree
 * HashTable
