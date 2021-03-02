@@ -1,132 +1,162 @@
+// NODE DEFINITION
+
 class Node {
-    constructor(data, next = null) {
-        this.data = data;
-        this.next = next;
-    }
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+    };
 }
 
-class LinkedList {
+class SinglyLinkedList {
     constructor() {
         this.head = null;
-        this.size = 0;
+        this.tail = null;
+        this.length = 0;
+    };
+    traverse() {
+        if (!this.length) return;
+        let current = this.head;
+        while(current.next) {
+            console.log(current)
+            current = current.next;
+            return current;
+        }
     }
-
-    // INSERT AT FIRST NODE
-    insertFirst(data) {
-        this.head  = new Node(data, this.head);
-        this.size++;
-    }
-
-    // INSERT AT LAST NODE
-    insertLast(data) {
-        let node = new Node(data);
-        let current;
-
-        // IF LIST IS EMPTY (HEAD IS NULL) INSERT AT HEAD
-        if(this.head === null) {
-            this.head = node;
-        } else {
-            current = this.head;
+    push(val) {
+        let newNode = new Node(val)
+        if (!this.head) {
+            this.head = newNode
+            this.head.next = null;
+            this.tail = this.head;
             
-            while(current.next) {
-                current = current.next;
-            }
-            current.next = node;
         }
-        this.size++;
+        else {
+            this.tail.next = newNode
+            this.tail = this.tail.next
+            
+        }
+        this.length++;
+        return this
     }
-
-    // INSERT AT INDEX
-    insertAt(data, index) {
-        // if the index to insert is larger than the size of the list
-        if(index > 0 && index > this.size) {
-            return;
-        }
-        // if index is first member of list
-        if (index === 0) {
-            this.head = new Node(data, this.head);
-            return;
-        }
-        // INSERT AT
-        const node = new Node(data);
-        let current, previous;
-        current = this.head // set current to first
-        let count = 0 // initialize counter
-
-        while(count < index) {
-            previous = current;
-            count++;
-            current = current.next;
-    
-        }
-        node.next = current;
-        previous.next = node;
-        this.size++;
-    }
-
-    // GET AT INDEX
-    getAt(index) {
+    pop() {
+        if (!this.head) return undefined;
         let current = this.head;
-        let count = 0;
-
-        while(current) {
-            if(count === index) {
-                console.log(current.data);
-            }
-            count++;
-            current = current.next;
+        let newTail = current;
+        while(current.next) {
+            newTail = current;
+            current = current.next
         }
-        return null;
+        this.tail = newTail;
+        this.tail.next = null;
+        this.length--;
+        if (!this.length) {
+            this.head = null;
+            this.tail = null;
+        }
+        return current;
     }
-
-    // REMOVE AT INDEX
-    removeAt(index) {
-        // counters and variables
-        let current = this.head;
-        let previous;
-        let count = 0;
-        // if there are no members of the list
-        if(index > 0 && index > this.size) {
-            return;
+    shift(){
+        if (!this.head) return undefined;
+        const current = this.head
+        this.head = current.next;
+        this.length--;
+        if (!this.length) {
+            this.tail = null;
         }
-        // if the list has only one member
-        if(index === 0) {
-            this.head = current.next
+        this.length--;
+        return current;
+    }
+    unshift(val){
+        let newNode = new Node(val);
+        if (!this.head) {
+            this.head = newNode;
+            this.tail = newNode;
         } else {
-            while(count < index) {
-                count++;
-                previous = current;
-                current = current.next;
-            }
-            previous.next = current.next;
+            newNode.next = this.head;
+            this.head = newNode
         }
-        this.size--;
+        this.length++;
+        return this;
     }
-
-    // CLEAR LIST
-    clearList() {
-        this.head = null;
-        this.size = 0;
-    }
-
-    // PRINT LIST DATA
-    printListData() {
-        let current = this.head;
-
-        while(current) {
-            console.log(current.data);
+    get(num) {
+        if (num < 0 || num >= this.length) return undefined;
+        let current = this.head
+        let count = 0;
+        while (count < num) {
             current = current.next;
+            count++;
         }
+        return current;
+    }
+    set(position, val) {
+        if (position < 0 || position >= this.length) return null;
+        let foundNode = this.get(position)
+        if (foundNode) {
+            foundNode.val = val;
+            return true;
+        }
+        return false;
+    }
+    insert(position, val) {
+        let newNode = new Node(val);
+        if (position < 0 || position > this.length) return undefined;
+        if (position === this.length) return !!this.push(newNode)
+        else if (position === 0) return !!this.unshift(newNode)
+        let prev = this.get(position - 1)
+        newNode.next = prev.next;
+        prev.next = newNode;
+        this.length++;
+        return true;
+    }
+    remove(position, val) {
+        let newNode = new Node(val);
+        if (position < 0 || position > this.length) return undefined;
+        if (position === this.length - 1) return !!this.pop(newNode)
+        else if (position === 0) return !!this.shift(newNode)
+        let prev = this.get(position - 1)
+        let removed = prev.next;
+        prev.next = removed.next
+        this.length--;
+        return removed;
+    }
+    reverse() {
+        // initialize a temp variable
+        let node = this.head;
+        // swap the head and the tail
+        this.head = this.tail;
+        // make the new tail the saved node (this.head)
+        this.tail = node;
+        // two holders for the prev/next swap
+        let next;
+        let prev;
+        // swap loop
+        for (let i = 0; i < this.length; i++) {
+            next = node.next;
+            node.next = prev;
+            prev = node;
+            node = next;
+        }
+        // return the 
+        return this;
     }
 }
 
-const linkedList = new LinkedList();
+let list = new SinglyLinkedList();
+list.push('Hi')
+list.push('there')
+list.push('how')
+list.push('are')
+list.push('ya')
+console.log(list)
+// console.log(list.pop())
+// console.log(list)
+// console.log(list.get(3))
+list.insert(3, 'cool cat')
+console.log(list.get(3))
+list.reverse()
+console.log(list);
 
-linkedList.insertFirst(100);
-linkedList.insertLast(300);
-linkedList.insertAt(200, 1)
-linkedList.getAt(0);
-linkedList.getAt(1);
-linkedList.getAt(2);
-
-linkedList.printListData();
+// let first = new Node('Hi')
+// first.next = new Node('There')
+// first.next.next = new Node('how are ya')
+// console.log(first)

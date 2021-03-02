@@ -14,7 +14,7 @@ class DoubleLinkedList {
     }
 
     // INSERT AT TAIL
-    insertAtTail(data) {
+    push(data) {
         // create new node
         const node = new Node(data);
         // if list has no members
@@ -33,7 +33,7 @@ class DoubleLinkedList {
     }
 
     // INSERT AT HEAD
-    insertAtHead(data) {
+    unshift(data) {
         // create new node
         const node = new Node(data);
         // if list has no members, make new node head and tail
@@ -52,22 +52,22 @@ class DoubleLinkedList {
     }
 
     // INSERT AT INDEX
-    insertAtIndex(data, index) {
+    insert(data, index) {
         // if the index is less than 0 or greater than the size of the list
         if(index < 0 || index > this.size) {
             return null;
         }
         // else if the index is 0, insert at the head
         else if (index === 0) {
-            return this.insertAtHead(data);
+            return this.unshift(data);
         }
         // else if the index equals the size of the list, insert at tail
         else if (index = this.size) {
-            return this.insertAtTail(data);
+            return this.push(data);
         }
         // INSERT AT INDEX
         const node = new Node(data);
-        const newPreviousNode = this.getAtIndex(index - 1);
+        const newPreviousNode = this.get(index - 1);
         const newNextNode = newPreviousNode.next;
 
         // connect the new node to the previous node
@@ -83,7 +83,7 @@ class DoubleLinkedList {
     }
 
     // GET AT INDEX
-    getAtIndex(index) {
+    get(index) {
         // if size is 0
         if(this.size === 0) {
             console.log('the size of the list is 0');
@@ -117,7 +117,7 @@ class DoubleLinkedList {
     }
 
     // REMOVE FROM HEAD
-    removeFromHead() {
+    shift() {
         // if list is empty return
         if (this.size === 0) {
             console.log('the size of the list is 0');
@@ -138,7 +138,7 @@ class DoubleLinkedList {
     }
 
     // REMOVE FROM TAIL
-    removeFromTail() {
+    pop() {
         // if list is empty return
         if (this.size === 0) {
             console.log('the size of the list is 0');
@@ -159,7 +159,7 @@ class DoubleLinkedList {
     }
 
     // REMOVE AT INDEX
-    removeAtIndex(index) {
+    remove(index) {
         // if list has no members
         if(this.size === 0) {
             console.log('the size of the list is 0');
@@ -167,13 +167,13 @@ class DoubleLinkedList {
         }
         // else if the provided index is 0
         else if(index === 0 ) {
-            return this.removeFromHead()
+            return this.shift()
         }
         else if (index = this.size) {
-            return this.removeFromTail();
+            return this.pop();
         }
         // REMOVE AT INDEX
-        const nodeToRemove = this.getAtIndex(index);
+        const nodeToRemove = this.get(index);
         const prevNodeToRemove = nodeToRemove.previous;
         const nextNodeToRemove = nodeToRemove.next; 
 
@@ -208,10 +208,10 @@ class DoubleLinkedList {
 
 const doubleLinkedList = new DoubleLinkedList();
 console.log('====================================')
-doubleLinkedList.insertAtHead(1);
-doubleLinkedList.insertAtHead(2);
-doubleLinkedList.insertAtHead(3);
-doubleLinkedList.insertAtHead(4);
+doubleLinkedList.unshift(1);
+doubleLinkedList.unshift(2);
+doubleLinkedList.unshift(3);
+doubleLinkedList.unshift(4);
 console.log('====================================')
 console.log('print first full list data')
 doubleLinkedList.printListData();
@@ -219,8 +219,8 @@ console.log('====================================')
 console.log('END OF LIST')
 console.log('====================================')
 console.log('====================================')
-doubleLinkedList.insertAtIndex(5, 5);
-doubleLinkedList.insertAtIndex(6, 6);
+doubleLinkedList.insert(5, 5);
+doubleLinkedList.insert(6, 6);
 console.log('====================================')
 console.log('add to tail list data')
 doubleLinkedList.printListData();
@@ -229,13 +229,13 @@ console.log('END OF LIST')
 console.log('====================================')
 console.log('====================================')
 console.log('get at index 0 list data')
-console.log(doubleLinkedList.getAtIndex(0));
+console.log(doubleLinkedList.get(0));
 console.log('====================================')
 console.log('END OF LIST')
 console.log('====================================')
 console.log('====================================')
-doubleLinkedList.removeFromHead();
-doubleLinkedList.removeFromTail();
+doubleLinkedList.shift();
+doubleLinkedList.pop();
 console.log('====================================')
 console.log('remove head and tail list data')
 doubleLinkedList.printListData();
@@ -243,7 +243,7 @@ console.log('====================================')
 console.log('END OF LIST')
 console.log('====================================')
 console.log('====================================')
-doubleLinkedList.removeAtIndex(0);
+doubleLinkedList.remove(0);
 console.log('====================================')
 console.log('remove at index 0 list data')
 doubleLinkedList.printListData();
