@@ -1,5 +1,3 @@
-// NODE DEFINITION
-
 class Node {
     constructor(val) {
         this.val = val;
@@ -141,22 +139,25 @@ class SinglyLinkedList {
     }
 }
 
-let list = new SinglyLinkedList();
-list.push('Hi')
-list.push('there')
-list.push('how')
-list.push('are')
-list.push('ya')
-console.log(list)
+
+// let list = new SinglyLinkedList();
+// list.push('Hi')
+// list.push('there')
+// list.push('how')
+// list.push('are')
+// list.push('ya')
+// console.log(list)
 // console.log(list.pop())
 // console.log(list)
 // console.log(list.get(3))
-list.insert(3, 'cool cat')
-console.log(list.get(3))
-list.reverse()
-console.log(list);
+// list.insert(3, 'cool cat')
+// console.log(list.get(3))
+// list.reverse()
+// console.log(list);
 
 // let first = new Node('Hi')
 // first.next = new Node('There')
 // first.next.next = new Node('how are ya')
 // console.log(first)
+
+export { Node, SinglyLinkedList };
