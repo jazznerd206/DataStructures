@@ -46,6 +46,11 @@ class LinkedList {
         return current;
     }
 
+    public void addFirst(String element) {
+        addAt(0, element);
+        return;
+    }
+
     // ADD AT METHOD
     // add an element to a list at the index from the params
     // returns nothing
@@ -168,7 +173,7 @@ class LinkedList {
         System.out.println("==============================");
         System.out.println("2. add three strings");
         System.out.println("==============================");
-        list.addAt(0, "string");
+        list.addFirst("string");
         list.addAt(1, "string2");
         list.addAt(2, "string3");
         System.out.println("==============================");
