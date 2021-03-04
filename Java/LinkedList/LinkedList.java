@@ -1,5 +1,5 @@
 
-public class LinkedList {
+class LinkedList {
     private Node head;
     private Node tail;
     private int size;
@@ -12,7 +12,7 @@ public class LinkedList {
     };
 
     // initialize linked list with null head, null tail and size zero
-    public LinkedList() {
+    LinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -45,7 +45,7 @@ public class LinkedList {
     public void addAt(int index, String element) {
 
         // HELPER FUNCTION
-        checkIndex(index, index, size - 1);
+        checkIndex(index, 0, size);
 
         // create new node, append passed element to data param
         Node newNode = new Node();
