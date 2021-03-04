@@ -93,15 +93,19 @@ class LinkedList {
     // remove element from list at index from params
     // returns the removed element as a string
     public String remove(int index) {
-        Node response;
+
         // HELPER CHECK INDEX FUNCTION (lns 31-38)
         checkIndex(index, 0, size - 1);
+
+        // INITIALIZE RETURN VARIABLE
+        Node response;
 
         // IF INDEX FROM PARAMS IS ZERO (HEAD)
         if (index == 0) {
             response = head;
             head = head.next;
             size--;
+            return response.data;
         }
         // call helper traverse function to get to right list position
         // set the response to the current (response is the node from which we will send
@@ -152,6 +156,13 @@ class LinkedList {
         System.out.println("==============================");
         LinkedList list = new LinkedList();
         System.out.println("==============================");
+        System.out.println("list should have length of 0");
+        System.out.println("PRINT LIST SIZE");
+        System.out.println(list.size());
+        System.out.println("PRINT LIST");
+        System.out.println(list.toString());
+        System.out.println("==============================");
+        System.out.println("==============================");
         System.out.println("2. add three strings");
         System.out.println("==============================");
         list.addAt(0, "string");
@@ -159,9 +170,9 @@ class LinkedList {
         list.addAt(2, "string3");
         System.out.println("==============================");
         System.out.println("list should have length of 3");
-        System.out.println("print list size");
+        System.out.println("PRINT LIST SIZE");
         System.out.println(list.size());
-        System.out.println("print list");
+        System.out.println("PRINT LIST");
         System.out.println(list.toString());
         System.out.println("==============================");
         System.out.println("==============================");
@@ -170,9 +181,9 @@ class LinkedList {
         list.remove(1);
         System.out.println("==============================");
         System.out.println("list should have length of 2");
-        System.out.println("print list size");
+        System.out.println("PRINT LIST SIZE");
         System.out.println(list.size());
-        System.out.println("print list");
+        System.out.println("PRINT LIST");
         System.out.println(list.toString());
         System.out.println("==============================");
         System.out.println("==============================");
@@ -182,9 +193,9 @@ class LinkedList {
         list.addAt(0, "string addback at index 0");
         System.out.println("==============================");
         System.out.println("list length should be 4");
-        System.out.println("print list size");
+        System.out.println("PRINT LIST SIZE");
         System.out.println(list.size());
-        System.out.println("print list");
+        System.out.println("PRINT LIST");
         System.out.println(list.toString());
         System.out.println("==============================");
         System.out.println("==============================");
@@ -196,9 +207,9 @@ class LinkedList {
         list.remove(0);
         System.out.println("==============================");
         System.out.println("list length should be 0");
-        System.out.println("print list size");
+        System.out.println("PRINT LIST SIZE");
         System.out.println(list.size());
-        System.out.println("print list");
+        System.out.println("PRINT LIST");
         System.out.println(list.toString());
         System.out.println("==============================");
     }
