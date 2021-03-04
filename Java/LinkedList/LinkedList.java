@@ -29,8 +29,6 @@ class LinkedList {
     public void checkIndex(int index, int low, int high) {
         if (index > high || index < low) {
             throw new IndexOutOfBoundsException(index + "");
-        } else {
-            System.out.println("Index valid");
         }
     }
 
@@ -46,22 +44,13 @@ class LinkedList {
         return current;
     }
 
-    public void addFirst(String element) {
-        addAt(0, element);
-        return;
-    }
-
-    public void addLast(String element) {
-        addAt(size, element);
-        return;
-    }
-
-    public String removeFirst() {
-        return remove(0);
-    }
-
-    public String removeLast() {
-        return remove(size);
+    // GET METHOD
+    // takes an index of type int
+    // returns a list element of type Node
+    public Node get(int index) {
+        checkIndex(index, 0, size - 1);
+        Node response = traverse(index);
+        return response;
     }
 
     // ADD AT METHOD
@@ -77,6 +66,7 @@ class LinkedList {
 
         // if the list is empty, set the head to the new node
         // set the tail to the head since there is only 1 element
+        // Appoggiatura
         // increment size
         if (head == null) {
             head = newNode;
@@ -106,6 +96,8 @@ class LinkedList {
     }
 
     // REMOVE METHOD
+    // is there a memory leak because I am not explicity setting the response
+    // variable back to empty after initializing it?
     // remove element from list at index from params
     // returns the removed element as a string
     public String remove(int index) {
@@ -140,8 +132,30 @@ class LinkedList {
         return response.data;
     }
 
+    public void addFirst(String element) {
+        addAt(0, element);
+        return;
+    }
+
+    public void addLast(String element) {
+        addAt(size, element);
+        return;
+    }
+
+    public String removeFirst() {
+        return remove(0);
+    }
+
+    public String removeLast() {
+        return remove(size);
+    }
+
     public int size() {
         return size;
+    }
+
+    public boolean noMembers() {
+        return size == 0;
     }
 
     public String toString() {
@@ -182,6 +196,8 @@ class LinkedList {
         System.out.println(list.size());
         System.out.println("PRINT LIST");
         System.out.println(list.toString());
+        assert list.noMembers();
+        assert list.toString().equals("{}");
         System.out.println("==============================");
         System.out.println("==============================");
         System.out.println("2. add three strings");
@@ -195,6 +211,8 @@ class LinkedList {
         System.out.println(list.size());
         System.out.println("PRINT LIST");
         System.out.println(list.toString());
+        assert list.toString().equals("{string, string2, string3}");
+        assert list.size == 3;
         System.out.println("==============================");
         System.out.println("==============================");
         System.out.println("3. remove from list at index 1");
@@ -206,6 +224,8 @@ class LinkedList {
         System.out.println(list.size());
         System.out.println("PRINT LIST");
         System.out.println(list.toString());
+        assert list.toString().equals("{string, string3}");
+        assert list.size == 2;
         System.out.println("==============================");
         System.out.println("==============================");
         System.out.println("4. add to list at index 1, add new head at index 0");
@@ -218,9 +238,17 @@ class LinkedList {
         System.out.println(list.size());
         System.out.println("PRINT LIST");
         System.out.println(list.toString());
+        assert list.toString().equals("{string addback at index 0, string, string2 addback, string3}");
+        assert list.size == 4;
+        System.out.println("==============================");
+        System.out.println("GET METHOD");
+        System.out.println("5. get index 1");
+        System.out.println(list.get(1));
+        System.out.println("5. get index 2");
+        System.out.println(list.get(2));
         System.out.println("==============================");
         System.out.println("==============================");
-        System.out.println("5. remove all from list");
+        System.out.println("6. remove all from list");
         System.out.println("==============================");
         list.remove(0);
         list.remove(0);
@@ -233,5 +261,7 @@ class LinkedList {
         System.out.println("PRINT LIST");
         System.out.println(list.toString());
         System.out.println("==============================");
+        assert list.noMembers();
+        assert list.toString().equals("{}");
     }
 }
