@@ -51,6 +51,19 @@ class LinkedList {
         return;
     }
 
+    public void addLast(String element) {
+        addAt(size, element);
+        return;
+    }
+
+    public String removeFirst() {
+        return remove(0);
+    }
+
+    public String removeLast() {
+        return remove(size);
+    }
+
     // ADD AT METHOD
     // add an element to a list at the index from the params
     // returns nothing
