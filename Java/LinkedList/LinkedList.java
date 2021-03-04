@@ -69,7 +69,7 @@ class LinkedList {
             return;
             // if index is zero, we are creating a new head
             // grab the value of the head and set it to newNode.next
-            // set newNode to the new head
+            // Appoggiatura
             // increment size
         } else if (head != null && index == 0) {
             newNode.next = head;
@@ -80,7 +80,7 @@ class LinkedList {
         ;
         // HELPER TRAVERSE FUNCTION (lns 42-52)
         // set newNode.next to "previous".next
-        // set "previous".next to newNode
+        // Appoggiatura
         // increment size
         Node current = traverse(index - 1);
         newNode.next = current.next;
@@ -94,13 +94,18 @@ class LinkedList {
     // returns the removed element as a string
     public String remove(int index) {
 
-        // HELPER CHECK INDEX FUNCTION (lns 31-38)
+        // Helper checkIndex function (lns 31-38)
         checkIndex(index, 0, size - 1);
 
-        // INITIALIZE RETURN VARIABLE
+        // Initialize return variable of type Node
+        // even though this is type node, we will return the data prop which is type
+        // string
         Node response;
 
-        // IF INDEX FROM PARAMS IS ZERO (HEAD)
+        // If index from params is zero (HEAD)
+        // set return variable to the current head
+        // Appoggiatura
+        // decrement the size
         if (index == 0) {
             response = head;
             head = head.next;
@@ -110,7 +115,7 @@ class LinkedList {
         // call helper traverse function to get to right list position
         // set the response to the current (response is the node from which we will send
         // the data)
-        // stitch the hole
+        // Appoggiatura
         // decrement size
         Node current = traverse(index - 1);
         response = current.next;
