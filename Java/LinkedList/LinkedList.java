@@ -158,6 +158,17 @@ class LinkedList {
         return size == 0;
     }
 
+    public boolean contains(String element) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == element) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('{');
@@ -248,7 +259,17 @@ class LinkedList {
         System.out.println(list.get(2));
         System.out.println("==============================");
         System.out.println("==============================");
-        System.out.println("6. remove all from list");
+        System.out.println("==============================");
+        System.out.println("CONTAINS METHOD");
+        System.out.println("6. contains string -- true");
+        System.out.println(list.contains("string"));
+        System.out.println("6. contains string 2 addback -- false");
+        System.out.println(list.contains("string 2 addback"));
+        System.out.println("6. contains string2 addback -- true");
+        System.out.println(list.contains("string2 addback"));
+        System.out.println("==============================");
+        System.out.println("==============================");
+        System.out.println("7. remove all from list");
         System.out.println("==============================");
         list.remove(0);
         list.remove(0);
