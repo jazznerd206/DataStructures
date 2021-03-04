@@ -1,4 +1,5 @@
-class LinkedList {
+
+public class LinkedList {
     private Node head;
     private Node tail;
     private int size;
@@ -8,24 +9,44 @@ class LinkedList {
         String data; // element
         Node next; // next pointer
         // Node prev; // previous pointer
-    }
+    };
 
-    LinkedList() {
+    // initialize linked list with null head, null tail and size zero
+    public LinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;
     }
 
-    // public boolean add(String element) {
-    //     add(size, element);
-    //     return true;
-    // }
-
-    public void addAt(int index, String element) {
-        if (index < 0 || index > size()) {
-            throw new IndexOutOfBoundsException();
+    // HELPER FUNCTION
+    // throws index out of bounds exception, otherwise pass
+    public void checkIndex(int index, int low, int high) {
+        if (index > high || index < low) {
+            System.out.println("Out of bounds");
+            throw new IndexOutOfBoundsException(index + "");
+        } else {
+            System.out.println("Index valid");
         }
-        
+    }
+
+    // HELPER FUNCTION
+    // traverse list, return Node
+    public Node traverse(int index) {
+        // grab the head
+        Node current = head;
+        // loop until the index before the one you want to insert
+        for (int i = 0; i < index - 1; ++i) {
+            current = current.next;
+        }
+        return current;
+    }
+
+    // ADD AT METHOD
+    public void addAt(int index, String element) {
+
+        // HELPER FUNCTION
+        checkIndex(index, index, size - 1);
+
         // create new node, append passed element to data param
         Node newNode = new Node();
         newNode.data = element;
@@ -36,31 +57,26 @@ class LinkedList {
         if (size() == 0) {
             head = newNode;
             tail = head;
-            size += 1;
+            size++;
+            // if index is zero, we are creating a new head
+            // grab the value of the head and set it to newNode.next
+            // set newNode to the new head
+            // increment size
+        } else if (index == 0) {
+            newNode.next = head;
+            head = newNode;
+            size++;
         }
+        ;
 
-        // get index of node previous of index
-        int counter = 0;
-        int previous = index - 1;
-        Node curr = head;
-        // loop until you reach the previous element
-        while (counter < index) {
-            curr = curr.next;
-            counter += 1;
-        }
-        
-        // set newNode.next to previous.next
-        newNode.next = curr.next;
-        // set previous.next to newNode
-        curr.next = newNode;
+        // HELPER FUNCTION
+        Node current = traverse(index);
+        // set newNode.next to "previous".next
+        newNode.next = current.next;
+        // set '"previous'.next to newNode
+        current.next = newNode;
         // increment size
-        size += 1;
-
-        // System.out.println("----------");
-        // System.out.println(curr.data);
-        // System.out.println(curr.next);
-        // System.out.println("----------");
-        
+        size++;
         return;
     }
 
@@ -94,9 +110,9 @@ class LinkedList {
         // test our your linked list here for now
         LinkedList list = new LinkedList();
         System.out.println("Hello World!");
-        list.addAt(0,"string");
-        list.addAt(1,"string");
-        list.addAt(2,"string");
+        list.addAt(0, "string");
+        list.addAt(1, "string");
+        list.addAt(2, "string");
         System.out.println(list.toString());
     }
 }
