@@ -19,10 +19,10 @@ class ArrayList {
             table[index] = element;
             size++;
         } else if (currEl != element) {
-            System.out.printf("current element @ index %s does not equal input element %s", index, element);
-            System.out.println("this is where the index shifting will go");
+            bubbleUp(index);
+            table[index] = element;
+            size++;
         }
-        return;
     }
 
     // remove
@@ -32,17 +32,24 @@ class ArrayList {
         return table[index];
     }
 
-    // adjust index
-
     // grow()
     public void growCheck() {
         int maxCap = table.length;
         if (size == maxCap) {
             int newSize = (int) Math.floor(maxCap * 1.61);
-            // System.out.println("===================");
-            // System.out.println(newSize);
-            // System.out.println("===================");
             table = Arrays.copyOf(table, newSize);
+        }
+    }
+
+    // adjust index
+    public void bubbleUp(int index) {
+        int i = size;
+        while (i > index) {
+            String temp = table[i - 1];
+            String temp2 = table[i - 2];
+            table[i] = temp;
+            table[i - 1] = temp2;
+            i--;
         }
     }
 
