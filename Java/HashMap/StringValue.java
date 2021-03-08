@@ -1,8 +1,10 @@
 public class StringValue {
     private String str;
+    private int hash;
 
     StringValue(String str) {
         this.str = str;
+        this.hash = 0;
     }
 
     public String toString() {
@@ -10,11 +12,12 @@ public class StringValue {
     }
 
     public int hashCode() {
-        int hashCode = 0;
-        for (int i = 0; i < str.length(); i++) {
-            hashCode += (int) str.charAt(i);
+        if (hash == 0 && str.length() > 0) {
+            for (int i = 0; i < str.length(); i++) {
+                hash += 31 * hash + (int) str.charAt(i);
+            }
         }
-        return hashCode;
+        return hash;
     }
 
     public boolean equals(Object o) {
