@@ -18,8 +18,8 @@ public class HashTable<K, V> {
         }
     }
 
-    HashTable(int length) {
-        this.table = (Node<K, V>[]) new Node[length];
+    HashTable() {
+        this.table = (Node<K, V>[]) new Node[primes[0]];
         this.size = 0;
         this.loadFactor = 0.5;
     }
@@ -33,14 +33,23 @@ public class HashTable<K, V> {
                 oldValue = (V) table[index].value;
                 break;
             } else {
-                // collision occurred, use linear probing
-                index = (index + 1) % table.length;
+                // collision occurred
+
+                // LINEAR PROBING
+                // index = (index + 1) % table.length;
+
+                // QUADRATIC PROBING
+                for (int j = 0; j < table.length; j++) {
+                    index = (index + j * j) % table.length;
+                    if (table[index] == null) {
+                        break;
+                    }
+                }
             }
         }
         if (oldValue == null) {
             size++;
         }
-        // if size > loadFactor * table.length then grow the hash table
         if (size > loadFactor * table.length) {
             grow();
         }
@@ -56,12 +65,19 @@ public class HashTable<K, V> {
         V returnValue = null;
         while (table[index] != null) {
             if (table[index].key != null && table[index].key.equals(key)) {
-                // System.out.println("value found");
                 returnValue = (V) table[index].value;
                 break;
             } else {
-                // System.out.println("increment index +1");
-                index = (index + 1) % table.length;
+                // linear probing
+                // index = (index + 1) % table.length;
+
+                // quadratic probing
+                for (int j = 0; j < table.length; j++) {
+                    index = (index + j * j) % table.length;
+                    if (table[index] == null) {
+                        break;
+                    }
+                }
             }
         }
         return returnValue;
@@ -77,33 +93,14 @@ public class HashTable<K, V> {
     }
 
     private void grow() {
-        // get new length
-        // initialize table holder so we can access data from the old table of nodes
-        // set current table to a new table of nodes of the new length
         int nextTableLength = nextTableLength(table.length);
         Node[] oldTable = table;
-        table = new Node[nextTableLength];
-        System.out.println("============= 1: old table: " + table.length);
-        System.out.println("============= 2: new table: " + table.length);
-        // loop through the old table
+        table = (Node<K, V>[]) new Node[nextTableLength];
         for (int i = 0; i < oldTable.length; i++) {
-            // if there is a key at index i
             if (oldTable[i] != null) {
-                // grab the key
-                K oldKey = (K) oldTable[i].key;
-                // rehash the key to get the proper index in the new table
-                int newIndex = Math.abs(oldKey.hashCode() % table.length);
-                System.out.printf("Old index: %s, Value: %s, new index: %s, new length: %s\n", i, oldTable[i].value,
-                        newIndex, table.length);
-                // if there is already a value at the new index
-                // and the key stored there is not equal to the key from the old table
-                if (table[newIndex] != null && table[newIndex].key != oldKey) {
-                    System.out.println("matching keys");
-                } else {
-                    System.out.println("non matching keys");
-                }
-                // set the table at the new index with the k/v pair from the old table
-                table[newIndex] = new Node(oldTable[i].key, oldTable[i].value);
+                K key = (K) oldTable[i].key;
+                V value = (V) oldTable[i].value;
+                put(key, value);
             }
         }
     }
@@ -128,43 +125,17 @@ public class HashTable<K, V> {
     }
 
     public static void main(String[] args) {
-        HashTable<StringValue, Integer> ht1 = new HashTable<>(7);
-        StringValue sv1 = new StringValue("Hello World");
-        StringValue sv2 = new StringValue("Hello Worl");
-        StringValue sv3 = new StringValue("Hello Wor");
-        StringValue sv4 = new StringValue("Hello Wo");
-        StringValue sv5 = new StringValue("Hello W");
-        StringValue sv6 = new StringValue("Hello");
-        StringValue sv7 = new StringValue("Hell");
-        StringValue sv8 = new StringValue("Hel");
-        StringValue sv9 = new StringValue("He");
-        ht1.put(sv1, 1);
-        // System.out.println(ht1.printString());
-        ht1.put(sv2, 2);
-        // System.out.println(ht1.printString());
-        ht1.put(sv3, 3);
-        // System.out.println(ht1.printString());
-        ht1.put(sv4, 4);
-        // System.out.println(ht1.printString());
-        ht1.put(sv5, 5);
-        // System.out.println(ht1.printString());
-        ht1.put(sv6, 6);
-        // System.out.println(ht1.printString());
-        ht1.put(sv7, 7);
-        // System.out.println(ht1.printString());
-        ht1.put(sv8, 8);
-        // System.out.println(ht1.printString());
-        ht1.put(sv9, 9);
+        HashTable<String, Integer> ht1 = new HashTable<>();
+        String keyPrefix = "key";
+        for (int i = 0; i < 9; i++) {
+            Integer value = i;
+            String key = keyPrefix + i;
+            ht1.put(key, value);
+        }
+        for (int i = 0; i < 9; i++) {
+            String key = keyPrefix + i;
+            System.out.println(ht1.get(key));
+        }
         System.out.println(ht1.printString());
-        System.out.println(ht1.get(sv1));
-        System.out.println(ht1.get(sv2));
-        System.out.println(ht1.get(sv3));
-        System.out.println(ht1.get(sv4));
-        System.out.println(ht1.get(sv5));
-        System.out.println(ht1.get(sv6));
-        System.out.println(ht1.get(sv7));
-        System.out.println(ht1.get(sv8));
-        System.out.println(ht1.get(sv9));
-
     }
 }
