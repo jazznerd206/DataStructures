@@ -1,49 +1,70 @@
 public class MergeSort {
-    // TWO FUNCTIONS
-    // -- first function
-    // recursively split the array down into blocks of one or zero length sub arrays
-    // -- second function
-    // merge arrays back together in sorted order
 
-    // FIRST FUNCTION
-    private void Sort(T[] a, int l, int r) {
-        if (left < right) {
+    private <T extends Comparable<T>> void sort(T[] a, int l, int r) {
+        if (l < r) {
             int p = l + (r - l) / 2;
-            Sort(a, l, p);
-            Sort(a, p + 1, r);
-            // Merge(a, l, p, r)
+            sort(a, l, p);
+            sort(a, p + 1, r);
+            merge(a, l, p, r);
         }
     }
 
-    private static void Merge(T[] a, int l, int p, int r) {
+    private static <T extends Comparable<T>> void merge(T[] a, int l, int p, int r) {
         int length = r - l + 1;
-        T[] temp = (T) new Comparable(length);
+        T[] temp = (T[]) new Comparable[length];
         int i = l;
         int j = p + 1;
         int k = 0;
+        printArray((Integer[]) a);
 
         while (i <= p && j <= r) {
-            if (arr[i] <= arr[j]) {
-                temp[k] = arr[i];
-                k++;
+            if (a[i].compareTo(a[j]) <= 0) {
+                temp[k] = a[i];
                 i++;
             } else {
-                temp[k] = arr[j];
-                k++;
+                temp[k] = a[j];
                 j++;
             }
+            k++;
         }
 
-        while (i < p) {
-            temp[k] = arr[i];
-            k++;
+        while (i <= p) {
+            temp[k] = a[i];
             i++;
+            k++;
         }
 
-        while (j < r) {
-            temp[k] = arr[j];
-            k++;
+        while (j <= r) {
+            temp[k] = a[j];
             j++;
+            k++;
         }
+        System.arraycopy(temp, 0, a, l, length);
+    }
+
+    public static void checkPointer(Integer index, int low, int high) {
+        if (index > high || index < low) {
+            throw new NullPointerException(index + "");
+        }
+    }
+
+    public void checkIndex(int index, int low, int high) {
+        if (index > high || index < low) {
+            throw new IndexOutOfBoundsException(index + "");
+        }
+    }
+
+    /* A utility function to print array of size n */
+    public static void printArray(Integer[] a) {
+        for (int i = 0; i < a.length; i++)
+            System.out.print(a[i] + " : ");
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Integer[] arr = { 4, 23, 6, 78, 1, 54, 231, 9, 12 };
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.sort(arr, 0, arr.length - 1);
+        printArray(arr);
     }
 }
