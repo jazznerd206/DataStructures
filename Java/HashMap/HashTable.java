@@ -27,6 +27,8 @@ public class HashTable<K, V> {
     public V put(K key, V value) {
         int index = Math.abs(key.hashCode() % table.length);
         V oldValue = null;
+        // initialization quadratic probing here
+        int i = 0;
         while (table[index] != null) {
             K oldKey = (K) table[index].key;
             if (oldKey != null && oldKey.equals(key)) {
@@ -39,30 +41,30 @@ public class HashTable<K, V> {
                 // index = (index + 1) % table.length;
 
                 // QUADRATIC PROBING
-                for (int j = 0; j < table.length; j++) {
-                    index = (index + j * j) % table.length;
-                    if (table[index] == null) {
-                        break;
-                    }
-                }
+                index = (index + i * i) % table.length;
+                i++;
             }
         }
         if (oldValue == null) {
             size++;
         }
+        table[index] = new Node(key, value);
         if (size > loadFactor * table.length) {
             grow();
         }
-        table[index] = new Node(key, value);
         return oldValue;
     }
 
     public V get(K key) {
         int index = Math.abs(key.hashCode() % table.length);
         if (table[index] == null) {
+            if (key.equals("key5")) {
+                System.out.println("wtf!");
+            }
             return null;
         }
         V returnValue = null;
+        int i = 0;
         while (table[index] != null) {
             if (table[index].key != null && table[index].key.equals(key)) {
                 returnValue = (V) table[index].value;
@@ -71,13 +73,9 @@ public class HashTable<K, V> {
                 // linear probing
                 // index = (index + 1) % table.length;
 
-                // quadratic probing
-                for (int j = 0; j < table.length; j++) {
-                    index = (index + j * j) % table.length;
-                    if (table[index] == null) {
-                        break;
-                    }
-                }
+                // QUADRATIC PROBING
+                index = (index + i * i) % table.length;
+                i++;
             }
         }
         return returnValue;
@@ -127,13 +125,19 @@ public class HashTable<K, V> {
     public static void main(String[] args) {
         HashTable<String, Integer> ht1 = new HashTable<>();
         String keyPrefix = "key";
-        for (int i = 0; i < 9; i++) {
+        int n = 1000999;
+        for (int i = 0; i < n; i++) {
             Integer value = i;
             String key = keyPrefix + i;
             ht1.put(key, value);
         }
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < n; i++) {
             String key = keyPrefix + i;
+            Integer value = ht1.get(key);
+            if (value.intValue() != i) {
+                System.out.printf("%s != %d is not valid\n", key, value);
+                System.exit(1);
+            }
             System.out.println(ht1.get(key));
         }
         System.out.println(ht1.printString());
