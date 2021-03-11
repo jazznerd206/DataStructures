@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class HashTable<K, V> {
     Node[] table;
     private double loadFactor;
@@ -11,6 +9,7 @@ public class HashTable<K, V> {
     public class Node<K, V> {
         K key;
         V value;
+        // boolean isRemoved; // lazy delete
 
         Node(K key, V value) {
             this.key = key;
@@ -27,7 +26,7 @@ public class HashTable<K, V> {
     public V put(K key, V value) {
         int index = Math.abs(key.hashCode() % table.length);
         V oldValue = null;
-        // initialization quadratic probing here
+        // ITERATOR FOR QUADRANAL PROBING
         int i = 0;
         while (table[index] != null) {
             K oldKey = (K) table[index].key;
@@ -35,8 +34,6 @@ public class HashTable<K, V> {
                 oldValue = (V) table[index].value;
                 break;
             } else {
-                // collision occurred
-
                 // LINEAR PROBING
                 // index = (index + 1) % table.length;
 
@@ -70,7 +67,7 @@ public class HashTable<K, V> {
                 returnValue = (V) table[index].value;
                 break;
             } else {
-                // linear probing
+                // LINEAR PROBING
                 // index = (index + 1) % table.length;
 
                 // QUADRATIC PROBING
@@ -91,6 +88,10 @@ public class HashTable<K, V> {
     }
 
     private void grow() {
+        if (table.length == Integer.MAX_VALUE) {
+            // TABLE IS FULLY ENGORGED
+            return;
+        }
         int nextTableLength = nextTableLength(table.length);
         Node[] oldTable = table;
         table = (Node<K, V>[]) new Node[nextTableLength];
@@ -122,14 +123,19 @@ public class HashTable<K, V> {
         return sb.toString();
     }
 
+    public int size() {
+        return size;
+    }
+
     public static void main(String[] args) {
         HashTable<String, Integer> ht1 = new HashTable<>();
         String keyPrefix = "key";
-        int n = 1000999;
+        int n = Integer.MAX_VALUE;
         for (int i = 0; i < n; i++) {
             Integer value = i;
             String key = keyPrefix + i;
             ht1.put(key, value);
+            System.out.printf("lastKeyInserted: %d\n", i);
         }
         for (int i = 0; i < n; i++) {
             String key = keyPrefix + i;
@@ -138,8 +144,7 @@ public class HashTable<K, V> {
                 System.out.printf("%s != %d is not valid\n", key, value);
                 System.exit(1);
             }
-            System.out.println(ht1.get(key));
         }
-        System.out.println(ht1.printString());
+        // System.out.println(ht1.printString());
     }
 }
