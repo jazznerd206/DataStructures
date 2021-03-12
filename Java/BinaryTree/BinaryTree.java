@@ -9,9 +9,17 @@ public class BinaryTree {
 
     private class Node {
         public int value;
+        public Node parent;
+
         public Node left;
         public Node right;
-        public Node parent;
+
+        /*
+         * // V2: replace left and right child pointers with an array fo size 2 public
+         * Node[] children; where children is of size 2, and 0 index represents left and
+         * 1 represents right https://en.wikipedia.org/wiki/Ternary_tree
+         * https://en.wikipedia.org/wiki/M-ary_tree
+         */
 
         // CONSTRUCTOR
         public Node(int v) {
@@ -61,8 +69,14 @@ public class BinaryTree {
     }
 
     // remove
-
-    // rebalance
+    public void remove(int v) {
+        Node current = traverseTo(v);
+        System.out.println(current);
+        // if there are no children (i.e. leaf node) just delete it (detach from parent)
+        // if there is only one child then do the correct thing for that child
+        // the correct thing: grab the right-most node from the left child subtree OR
+        // grab the left-most node formthe right child subtree
+    }
 
     // print utilities
     public String printTree(Node root, String type) {
@@ -99,9 +113,10 @@ public class BinaryTree {
         bt.insert(9);
         bt.insert(1);
         bt.insert(6);
-        System.out.println(bt.printTree(bt.root, "inOrder"));
-        System.out.println(bt.printTree(bt.root, "preOrder"));
-        System.out.println(bt.printTree(bt.root, "postOrder"));
+        bt.remove(6);
+        // System.out.println(bt.printTree(bt.root, "inOrder"));
+        // System.out.println(bt.printTree(bt.root, "preOrder"));
+        // System.out.println(bt.printTree(bt.root, "postOrder"));
         // bt.printTreeInOrder(bt.root);
         // bt.printTreePreOrder(bt.root);
         // bt.printTreePostOrder(bt.root);
