@@ -9,7 +9,6 @@ public class BinaryTree {
 
     private class Node {
         public int value;
-        public Node parent;
 
         public Node left;
         public Node right;
@@ -26,7 +25,6 @@ public class BinaryTree {
             value = v;
             left = null;
             right = null;
-            parent = null;
         }
     }
 
@@ -49,32 +47,59 @@ public class BinaryTree {
         return null;
     }
 
-    // return leftmost child from the right side
-    // this will essentially be the next lowest number in the tree
-    public Node findNextLowest(Node n) {
-        if (n.right == null)
-            return n;
-        Node current = n.right;
-        Node parent = n.right;
-        while (current != null) {
-            parent = current;
-            current = current.left;
+    public Node parentOf(int v) {
+        Node parent = null;
+        Node curr = root;
+        while (curr != null) {
+            if (v < curr.value) {
+                parent = curr;
+                curr = curr.left;
+            } else if (v > curr.value) {
+                parent = curr;
+                curr = curr.right;
+            } else {
+                return parent;
+            }
         }
         return parent;
     }
 
-    // return rightmost child from the left side
-    // this will essentially be the next highest number in the tree
-    public Node findNextHighest(Node n) {
-        if (n.left == null)
-            return n;
-        Node current = n.left;
-        Node parent = n.left;
-        while (current != null) {
-            parent = current;
-            current = current.right;
+    private Node find(int v) {
+        Node curr = root;
+        while (curr != null) {
+            if (v < curr.value) {
+                curr = curr.left;
+            } else if (v > curr.value) {
+                curr = curr.right;
+            } else {
+                return curr;
+            }
         }
-        return parent;
+        return curr;
+    }
+
+    public Integer findMin() {
+        Node min = findMin(root);
+        return (min != null) ? min.value : null;
+    }
+
+    private Node findMin(Node node) {
+        while (node != null && node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    public Integer findMax() {
+        Node max = findMax(root);
+        return (max != null) ? max.value : null;
+    }
+
+    private Node findMax(Node node) {
+        while (node != null && node.right != null) {
+            node = node.right;
+        }
+        return node;
     }
 
     public void insert(int v) {
@@ -82,129 +107,75 @@ public class BinaryTree {
         if (root == null) {
             root = newNode;
         } else {
-            Node parent = traverseTo(v);
-            if (v < parent.value) {
+            Node parent = parentOf(v);
+            if (parent.left == null && v < parent.value) {
                 parent.left = newNode;
-                parent.left.parent = parent;
                 return;
-            } else {
+            } else if (parent.right == null) {
                 parent.right = newNode;
-                parent.right.parent = parent;
                 return;
-            }
+            } /* else parent.value == v */
         }
     }
 
     public boolean remove(int v) {
-        // just like a linked list, in order to remove a node we must set it to null and
-        // remove the connections from it's neighbors
-        // potential connections: parent, child left, child right
+        if (root == null) {
+            return false;
+        }
 
-        // obtain a reference to the value to be removed
-        Node current = traverseTo(v);
+        Node parent = null;
+        Node curr = root;
 
-        // IF THERE ARE NO CHILDREAN (i.e. leaf node)
-        // detach from parent
-        if (current.right == null && current.left == null) {
-            // sanity check
-            if (current.value != v)
-                return false;
-            // if the current node is the root node, set the root to null
-            if (current == root) {
-                root = null;
-            } else if (current.parent.value < current.value) {
-                // if the parent value is less than the current value, sever the connection to
-                // the right child
-                current.parent.right = null;
+        while (curr != null && curr.value != v) {
+            if (v < curr.value) {
+                parent = curr;
+                curr = curr.left;
+            } else if (v > curr.value) {
+                parent = curr;
+                curr = curr.right;
+            }
+        }
+
+        if (curr == null || curr.value != v) {
+            return false;
+        }
+
+        if (curr.left == null) {
+            if (parent.left == curr) {
+                parent.left = curr.right;
             } else {
-                // else sever the connection to the left child
-                current.parent.left = null;
+                parent.right = curr.right;
             }
             return true;
         }
 
-        // IF THERE ARE TWO CHILDREN
-        // the correct thing: grab the right-most node from the left child subtree OR
-        // grab the left-most node formthe right child subtree
-        if (current.right != null && current.left != null) {
-
-            // OBTAIN REPLACEMENT - go right once and then turtles all the way down
-            // nextHighest should have no left children since it's the bottom of the tree
-            Node nextHighest = findNextHighest(current);
-
-            // change the left node data first
-            nextHighest.left = current.left;
-            // change parent data
-            nextHighest.left.parent = nextHighest;
-
-            // edge case, next highest in the tree has a right child
-            if (nextHighest.right != null) {
-                // FROM THE REPLACEMENT NODE
-                // go one node down to the right, change parent reference
-                nextHighest.right.parent = nextHighest.parent;
-                // go one node up, change left node reference
-                nextHighest.parent.left = nextHighest.right;
-                // go to node down to the right, change value
-                nextHighest.right = current.right;
-                // go to node down to the right, change parent reference
-                nextHighest.right.parent = nextHighest;
+        if (curr.right == null) {
+            if (parent.left == curr) {
+                parent.left = curr.left;
             } else {
-                // else other case
-                nextHighest.parent.left = null;
-                nextHighest.right = current.right;
-                nextHighest.right.parent = nextHighest;
+                parent.right = curr.left;
             }
-
-            // if the current value is the root (which has 2 children)
-            if (current == root) {
-                nextHighest.parent = null;
-                root = nextHighest;
-                return true;
-            } else {
-                // you are deleting a node which is not the root
-                nextHighest.parent = current.parent;
-
-                // if the parent value is lower than the current value
-                if (current.parent.value < current.value)
-                    // create a new connection on the right side
-                    current.parent.right = nextHighest;
-                else
-                    // create a new connection on the left side
-                    current.parent.left = nextHighest;
-                return true;
-            }
-
-            // if there is only one child
-        } else {
-            if (current.right != null) {
-                // root check
-                if (current == root) {
-                    root = current.right;
-                    return true;
-                }
-
-                current.right.parent = current.parent;
-
-                if (current.value < current.parent.value)
-                    current.parent.left = current.right;
-                else
-                    current.parent.right = current.right;
-                return true;
-            } else {
-                if (current == root) {
-                    root = current.left;
-                    return true;
-                }
-
-                current.left.parent = current.parent;
-
-                if (current.value < current.parent.value)
-                    current.parent.left = current.left;
-                else
-                    current.parent.right = current.left;
-                return true;
-            }
+            return true;
         }
+
+        // if (curr.left != null && curr.right != null)
+        Node next = curr.left;
+        Node nextParent = curr;
+        while (next != null && next.right != null) {
+            nextParent = next;
+            next = next.right;
+        }
+
+        // update current node to next node value
+        curr.value = next.value;
+
+        // remove next node from it's parent
+        if (nextParent.left == next) {
+            nextParent.left = null;
+        } else {
+            nextParent.right = null;
+        }
+        return true;
     }
 
     // print utilities
@@ -235,20 +206,22 @@ public class BinaryTree {
         bt.insert(4);
         bt.insert(3);
         bt.insert(5);
-        bt.insert(2);
         bt.insert(1);
         bt.insert(7);
         bt.insert(2);
         bt.insert(9);
-        bt.insert(1);
         bt.insert(6);
-        System.out.println(bt.remove(6));
-        bt.remove(5);
-        System.out.println(bt.remove(5));
-        bt.remove(12);
-        System.out.println(bt.remove(12));
-        bt.remove(1);
-        System.out.println(bt.remove(1));
+        // 1, 2, 3, 4, 5, 6, 7, 9
+        System.out.println("bt.remove(6): " + bt.remove(6));
+        System.out.println("bt.remove(6): " + bt.remove(6));
+        // 1, 2, 3, 4, 5, 7, 9
+        System.out.println("bt.remove(5): " + bt.remove(5));
+        System.out.println("bt.remove(5): " + bt.remove(5));
+        // 1, 2, 3, 4, 7, 9
+        System.out.println("bt.remove(12): " + bt.remove(12));
+        System.out.println("bt.remove(1): " + bt.remove(1));
+        System.out.println("bt.remove(1): " + bt.remove(1));
+        // 2, 3, 4, 7, 9
         System.out.println(bt.printTree(bt.root, "inOrder"));
         // System.out.println(bt.printTree(bt.root, "preOrder"));
         // System.out.println(bt.printTree(bt.root, "postOrder"));
