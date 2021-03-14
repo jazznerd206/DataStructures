@@ -29,23 +29,23 @@ public class BinaryTree {
     }
 
     // traverse
-    public Node traverseTo(int v) {
-        Node c = root;
-        while (c != null) {
-            if (v < c.value) {
-                if (c.left == null)
-                    return c;
-                c = c.left;
-            } else if (v > c.value) {
-                if (c.right == null)
-                    return c;
-                c = c.right;
-            } else {
-                return c;
-            }
-        }
-        return null;
-    }
+    // public Node traverseTo(int v) {
+    // Node c = root;
+    // while (c != null) {
+    // if (v < c.value) {
+    // if (c.left == null)
+    // return c;
+    // c = c.left;
+    // } else if (v > c.value) {
+    // if (c.right == null)
+    // return c;
+    // c = c.right;
+    // } else {
+    // return c;
+    // }
+    // }
+    // return null;
+    // }
 
     public Node parentOf(int v) {
         Node parent = null;
@@ -181,7 +181,6 @@ public class BinaryTree {
     // print utilities
     public String printTree(Node root, String type) {
         StringBuilder sb = new StringBuilder();
-        sb.append("ROOT --> ");
         if (root != null) {
             if (type == "inOrder") {
                 printTree(root.left, type);
@@ -223,10 +222,5 @@ public class BinaryTree {
         System.out.println("bt.remove(1): " + bt.remove(1));
         // 2, 3, 4, 7, 9
         System.out.println(bt.printTree(bt.root, "inOrder"));
-        // System.out.println(bt.printTree(bt.root, "preOrder"));
-        // System.out.println(bt.printTree(bt.root, "postOrder"));
-        // bt.printTree(bt.root, "inOrder");
-        // bt.printTreePreOrder(bt.root);
-        // bt.printTreePostOrder(bt.root);
     }
 }
