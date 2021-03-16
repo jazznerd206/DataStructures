@@ -27,26 +27,31 @@ public class BinaryHeap {
     }
 
     // push()
-    public boolean push(int value) {
+    public void push(int value) {
         if (size + 1 > data.length / 2) {
             grow();
         }
-        size++;
         data[size] = value;
         percolateUp(size);
-        return true;
+        size++;
     }
 
     // percolate up
     public void percolateUp(int index) {
         int pidx = index / 2;
-        if (index == 1 || data[pidx] < data[index]) {
-            System.out.println("bubble break");
-            return;
+        while (index >= 1) {
+            if (data[index] > data[pidx]) {
+                System.out.println("bubble break");
+                break;
+            } else {
+                System.out.println("swap");
+                swap(pidx, index);
+                percolateUp(pidx);
+            }
         }
-        System.out.println("swap");
-        swap(pidx, index);
-        percolateUp(index - 1);
+        // if (index == 1 || data[pidx] < data[index]) {
+        // return;
+        // }
     }
 
     // pop()
@@ -54,10 +59,20 @@ public class BinaryHeap {
         if (size == 0) {
             throw new NoSuchElementException("no such element");
         }
-        int value = data[size];
-        data[size] = null;
+        int value = data[0];
+        int i = 0;
+        while (i < size) {
+            data[i] = data[i + 1];
+            i++;
+        }
         size--;
-        // percolateDown() goes here
+        System.out.println("Value: " + value);
+        return value;
+    }
+
+    public int extractMin() {
+        int value = data[size];
+        size--;
         return value;
     }
 
@@ -82,15 +97,17 @@ public class BinaryHeap {
         data = newData;
     }
 
-    // // return the index of the left child
-    // public static int leftChild(int i) {
-    // return 2 * i + 1;
-    // }
+    public static int leftChild(int i) {
+        return 2 * i + 1;
+    }
 
-    // // return the index of the right child
-    // public static int rightChild(int i) {
-    // return 2 * i + 2;
-    // }
+    public static int rightChild(int i) {
+        return 2 * i + 2;
+    }
+
+    private int parent(int pos) {
+        return pos / 2;
+    }
 
     // print
     public void print() {
@@ -121,10 +138,11 @@ public class BinaryHeap {
         bh.print();
         bh.push(5);
         bh.print();
-        // bh.pop();
-        // bh.pop();
+        bh.pop();
+        bh.print();
+        bh.pop();
+        bh.print();
         // bh.pop();
         // bh.pop();
     }
-
 }
