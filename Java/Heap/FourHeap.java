@@ -22,7 +22,6 @@ public class FourHeap {
     }
 
     public void percolateUp(int index) {
-        // System.out.println("bitch y tho");
         int pidx = (index - 1) / chCnt;
         int lastEl = data[index];
         while (index >= 1 && lastEl < data[pidx]) {
@@ -34,9 +33,8 @@ public class FourHeap {
     }
 
     public int pop() {
-        System.out.println("bang bang");
         if (isEmpty()) {
-            throw new IllegalStateException("No crayons in this box.");
+            throw new IllegalStateException("You can't pop from an empty heap.");
         }
         int value = data[0].intValue();
         size--;
