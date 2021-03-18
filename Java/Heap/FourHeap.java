@@ -19,11 +19,14 @@ public class FourHeap {
     }
 
     public void percolateUp(int index) {
-        int pidx = index - 1 / chCnt;
+        // System.out.println("bitch y tho");
+        int pidx = (index - 1) / chCnt;
         int lastEl = data[index];
-        while (index >= 1 && lastEl > data[pidx]) {
-            swap(pidx, index);
-            percolateUp(pidx);
+        // System.out.println(data[index] + " " + data[pidx]);
+        while (index >= 1 && lastEl < data[pidx]) {
+            data[index] = data[pidx];
+            index = pidx;
+            pidx = (pidx - 1) / 2;
         }
         data[index] = lastEl;
     }
