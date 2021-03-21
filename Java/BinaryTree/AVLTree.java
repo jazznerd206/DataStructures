@@ -1,14 +1,12 @@
 public class AVLTree {
     public class AVLNode {
         private int element;
-        private AVLNode left;
-        private AVLNode right;
+        private AVLNode[] children;
         private int height;
 
         AVLNode(int element) {
             this.element = element;
-            this.left = null;
-            this.right = null;
+            this.children = new AVLNode[2];
             this.height = 0;
         }
     }
@@ -19,50 +17,14 @@ public class AVLTree {
         return t == null ? -1 : t.height;
     }
 
-    /**
-     * 2 * Rotate binary tree node with left child. 3 * For AVL trees, this is a
-     * single rotation for case 1. 4 * Update heights, then return new root. 5
-     */
-    private AVLNode rotateWithLeftChild(AVLNode k2) {
-        AVLNode k1 = k2.left;
-        k2.left = k1.right;
-        k1.right = k2;
-        k2.height = Math.max(height(k2.left), height(k2.right)) + 1;
-        k1.height = Math.max(height(k1.left), k2.height) + 1;
+    // assume child is left child (or zero)
+    private AVLNOde rotate(AVLNode k2, int child) {
+        AVLNode k1 = k2.children[child];
+        k2.children[child] = k1.children[1 - child];
+        k1.children[1 - child] = k2;
+        k2.height = Math.max(height(k2.children[child]), height(k2.children[1 - child])) + 1;
+        k1.height = Math.max(height(k1.children[child]), k2.height) + 1;
         return k1;
-    }
-
-    /**
-     * 2 * Double rotate binary tree node: first left child 3 * with its right
-     * child; then node k3 with new left child. 4 * For AVL trees, this is a double
-     * rotation for case 2. 5 * Update heights, then return new root. 6
-     */
-    private AVLNode doubleWithLeftChild(AVLNode k3) {
-        k3.left = rotateWithRightChild(k3.left);
-        return rotateWithLeftChild(k3);
-    }
-
-    /**
-     * 2 * Rotate binary tree node with right child. 3 * For AVL trees, this is a
-     * single rotation for case 1. 4 * Update heights, then return new root. 5
-     */
-    private AVLNode rotateWithrightChild(AVLNode k2) {
-        AVLNode k1 = k2.right;
-        k2.right = k1.right;
-        k1.right = k2;
-        k2.height = Math.max(height(k2.right), height(k2.left)) + 1;
-        k1.height = Math.max(height(k1.right), k2.height) + 1;
-        return k1;
-    }
-
-    /**
-     * 2 * Double rotate binary tree node: first right child 3 * with its right
-     * child; then node k3 with new right child. 4 * For AVL trees, this is a double
-     * rotation for case 2. 5 * Update heights, then return new root. 6
-     */
-    private AVLNode doubleWithrightChild(AVLNode k3) {
-        k3.right = rotateWithRightChild(k3.right);
-        return rotateWithrightChild(k3);
     }
 
     // INSERT
@@ -76,9 +38,9 @@ public class AVLTree {
             return new AVLNode(x);
         int compareResult = x - t.element;
         if (compareResult < 0)
-            t.left = insert(x, t.left);
+            t.children[0] = insert(x, t.children[0]);
         else if (compareResult > 0)
-            t.right = insert(x, t.right);
+            t.children[1] = insert(x, t.children[1]);
         else
             ; // Duplicate; do nothing
         return balance(t);
@@ -99,15 +61,15 @@ public class AVLTree {
         int compareResult = x - t.element;
 
         if (compareResult < 0)
-            t.left = remove(x, t.left);
+            t.children[0] = remove(x, t.children[0]);
         else if (compareResult > 0)
-            t.right = remove(x, t.right);
-        else if (t.left != null && t.right != null) // Two children
+            t.children[1] = remove(x, t.children[1]);
+        else if (t.children[0] != null && t.children[1] != null) // Two children
         {
-            t.element = findMin(t.right).element;
-            t.right = remove(t.element, t.right);
+            t.element = findMin(t.children[1]).element;
+            t.children[1] = remove(t.element, t.children[1]);
         } else
-            t = (t.left != null) ? t.left : t.right;
+            t = (t.children[0] != null) ? t.children[0] : t.children[1];
         return balance(t);
     }
 
@@ -115,20 +77,32 @@ public class AVLTree {
     private AVLNode balance(AVLNode t) {
         if (t == null)
             return t;
-        if (height(t.left) - height(t.right) > ALLOWED_IMBALANCE)
-            if (height(t.left.left) >= height(t.left.right))
-                t = rotateWithLeftChild(t);
-            else
-                t = doubleWithLeftChild(t);
-        else if (height(t.right) - height(t.left) > ALLOWED_IMBALANCE)
-            if (height(t.right.right) >= height(t.right.left))
-                t = rotateWithRightChild(t);
-            else
-                t = doubleWithRightChild(t);
+        int diff = height(t.children[0]) - height(t.children[1]);
+        boolean imbalanced = Math.abs(diff) > ALLOWED_IMBALANCE;
+        if (imbalanced) {
+            int child = (diff > ALLOWED_IMBALANCE) ? 0 : 1;
+            boolean doubleRotate = height(t.children[child].children[child]) < height(
+                    t.children[child].children[1 - child]);
+            if (doubleRotate) {
+                t.children[child] = rotate(t.children[child], 1 - child);
+            }
+            t = rotate(t, child);
+        }
 
-        t.height = Math.max(height(t.left), height(t.right)) + 1;
+        t.height = Math.max(height(t.children[0]), height(t.children[1])) + 1;
         return t;
     }
+
+    // isAVLTree() {
+    // it will start recursion
+    // base case
+    // isAVLTreeHelper(Node,arg1, args2, etc) // recursive helper
+
+    // each node, if has two children, make sure theyre valid
+    // valid binary
+    // without using the height prop or method, get the height of the left and right
+    // subtrees
+    // Depth first search
 
     public static void main(String[] args) {
         System.out.println("Nothing here yet.");
