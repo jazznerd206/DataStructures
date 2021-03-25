@@ -22,22 +22,33 @@ public class Trie {
     }
 
     public void insert(int[] t9, String word) {
+        for (int i = 0; i < t9.length; i++) {
+            System.out.print("T9: ");
+            System.out.print(t9[i] + " ");
+            System.out.println();
+        }
+        System.out.println("word: " + word);
         // start at the root
         Node curr = root;
         // initialize loop through t9 array, numerical representation of the letters
         for (int i = 0; i < t9.length; i++) {
-            char c = t9[i];
-            // if map m of trie does not contain the current key of the t9 array
-            if (curr.m.containsKey(c)) {
-                // at this point, we know the map already contains the node
-                // set curent to node from hashmap
-                curr = curr.m.get(c);
-            } else {
+            char c = word.charAt(i);
+            System.out.println("current character: " + c);
+            System.out.println("current: " + curr);
+            // if map m of trie contains the current key of the t9 array
+            if (!curr.m.containsKey(t9[i])) {
                 // build a new node
-                // WHERE DOES THIS GO??
                 // is it enough just to put it in the map?
-                curr = new Node(t9[i]);
+                curr = new Node();
+                curr.words.add(word);
                 curr.m.put(t9[i], curr);
+                System.out.println("word not found: " + curr);
+            } else {
+                // at this point, we know the map contains a node corresponding to the current
+                // t9 digit
+                // get that node, set curr to its value
+                curr = curr.m.get(c);
+                System.out.println("word found: " + curr);
             }
         }
         return;
@@ -49,21 +60,43 @@ public class Trie {
 
     // return t9 #num representation
     public static int[] toT9(String word) {
-        return new int[] { 2, 2, 7 };
-        // int[] t9array = new int[word.length];
-        // word = word.toLowerCase();
-        // // length of input string
-        // int n = word.length();
-        // for (int i = 0; i < n; i++) {
-        // if (word.charAt(i) == ' ')
-        // t9array = t9array + "0";
-
-        // else {
-        // int position = word.charAt(i) - 'A';
-        // t9array[i] = position;
-        // }
-        // }
-        // return t9array;
+        System.out.println("length: " + word.toCharArray().length);
+        int length = word.toCharArray().length;
+        int[] T9 = new int[length];
+        HashMap<Character, Integer> map = new HashMap();
+        map.put('a', 2);
+        map.put('b', 2);
+        map.put('c', 2);
+        map.put('d', 3);
+        map.put('e', 3);
+        map.put('f', 3);
+        map.put('g', 4);
+        map.put('h', 4);
+        map.put('i', 4);
+        map.put('j', 5);
+        map.put('k', 5);
+        map.put('l', 5);
+        map.put('m', 6);
+        map.put('n', 6);
+        map.put('o', 6);
+        map.put('p', 7);
+        map.put('q', 7);
+        map.put('r', 7);
+        map.put('s', 7);
+        map.put('t', 8);
+        map.put('u', 8);
+        map.put('v', 8);
+        map.put('w', 9);
+        map.put('x', 9);
+        map.put('y', 9);
+        map.put('z', 9);
+        System.out.println(map);
+        for (int i = 0; i < length; i++) {
+            char key = word.charAt(i);
+            System.out.println("Key: " + key + ", from map: " + map.get(key));
+            T9[i] = map.get(key);
+        }
+        return T9;
     }
 
     // http://github.com/dwyl/english-words/blob/master/words.txt
@@ -102,22 +135,22 @@ public class Trie {
             }
             scan.close();
 
-            Scanner input = new Scanner(System.in);
-            String line = "";
-            while (true) {
-                System.out.print("Enter T9: ");
-                line = input.nextLine();
-                line = line.trim().toLowerCase();
-                if (line.startsWith("q")) {
-                    break;
-                }
-                String token = line.split(" ")[0];
-                if (isValidT9(token)) {
-                    List<String> words = t9ToWords.lookup(toT9(token));
-                    System.out.println("Possible words are: " + words.toString());
-                }
-            }
-            input.close();
+            // Scanner input = new Scanner(System.in);
+            // String line = "";
+            // while (true) {
+            // System.out.print("Enter T9: ");
+            // line = input.nextLine();
+            // line = line.trim().toLowerCase();
+            // if (line.startsWith("q")) {
+            // break;
+            // }
+            // String token = line.split(" ")[0];
+            // if (isValidT9(token)) {
+            // List<String> words = t9ToWords.lookup(toT9(token));
+            // System.out.println("Possible words are: " + words.toString());
+            // }
+            // }
+            // input.close();
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
