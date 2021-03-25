@@ -13,11 +13,9 @@ public class Trie {
         this.root = new Node();
     }
 
-    // T9 to possible word (0-9 input, list of words output)
-
     public class Node {
-        LinkedList<String> words; // value
-        HashMap<Integer, Node> m; // next pointer
+        LinkedList<String> words;
+        HashMap<Integer, Node> m;
 
         public Node() {
             this.words = new LinkedList();
@@ -70,7 +68,6 @@ public class Trie {
         return 0;
     }
 
-    // return t9 #num representation
     public static int[] toT9(String word) {
         int[] t9 = new int[word.length()];
         for (int i = 0; i < t9.length; i++) {
@@ -78,8 +75,6 @@ public class Trie {
         }
         return t9;
     }
-
-    // http://github.com/dwyl/english-words/blob/master/words.txt
 
     private static boolean containsLettersOnly(String word) {
         for (char ch : word.toCharArray()) {
@@ -109,6 +104,7 @@ public class Trie {
 
     public static void main(String[] args) {
         try {
+            // http://github.com/dwyl/english-words/blob/master/words.txt
             File dictionary = new File("/Users/miller/Downloads/words.txt");
             Scanner scan = new Scanner(dictionary);
 
