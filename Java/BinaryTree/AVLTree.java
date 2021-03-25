@@ -1,3 +1,5 @@
+import javax.security.auth.x500.X500Principal;
+
 public class AVLTree {
     public class AVLNode {
         private int element;
@@ -54,7 +56,7 @@ public class AVLTree {
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private AVLNode remove(int x, AvlNode<AnyType> t) {
+    private AVLNode remove(int x, AvlNode t) {
         if (t == null)
             return t; // Item not found; do nothing
 
@@ -95,14 +97,100 @@ public class AVLTree {
 
     // isAVLTree() {
     // it will start recursion
-    // base case
-    // isAVLTreeHelper(Node,arg1, args2, etc) // recursive helper
+    public boolean isAVLTree(AVLNode t) {
+        // base case
+        if (t = null) {
+            return true;
+        }
 
-    // each node, if has two children, make sure theyre valid
-    // valid binary
-    // without using the height prop or method, get the height of the left and right
-    // subtrees
-    // Depth first search
+        AVLNode curr = t;
+
+        // check for children
+        // if there are no children, the
+        AVLNode[] children = getChildren(curr);
+        if (children = null) {
+            // this case is guaranteed to represent the full height of the tree
+            // height++?
+            return true;
+        } else if (children[0] != null) {
+            // this case represent (height - 1) of the tree
+            System.out.println("one child case here, children[0]");
+        } else if (children[1] != null) {
+            // this case represent (height - 1) of the tree
+            System.out.println("one child case here, children[1]");
+        } else {
+            // continue with recursive case until height is reached.
+            getChildren(curr.children[0]);
+            getChildren(curr.children[1]);
+        }
+
+        // isAVLTreeHelper(Node,arg1, args2, etc) // recursive helper
+
+        // each node, if has two children, make sure theyre valid (BST validation
+        // methods)
+        // without using the height prop or method, get the height of the left and right
+        // subtrees
+
+        return true;
+    }
+
+    public AVLNode[] getChildren(AVLNode p) {
+        return p.children;
+    }
+
+    // should return balance factor of the tree
+    // if greater than 1, not AVL
+    private int getBalance(AVLNode n) {
+        return n == null ? 0 : height2(n.left) - height2(n.right);
+    }
+
+    // should return the full height of the tree?
+    public static int height2(AVLNode curr) {
+        if (curr == null)
+            return 0;
+        int left = height2(curr.left);
+        int right = height2(curr.right);
+        return Math.max(left, right) + 1;
+    }
+
+    // BST validation for nodes which have two children
+    // if false, not AVL
+    public boolean validateTwoChildren(AVLNode p) {
+        return p.children[0].element < p.element && p.element < p.children[1].element;
+    }
+
+    // BST validation for nodes which have one child
+    // if false, not AVL
+    public boolean validateOneChild(AVLNode p) {
+        if (p.children[0] = null) {
+            return p.element < p.children[1].element;
+        } else if (p.children[1] == null) {
+            return p.children[0].element < p.element;
+        }
+    }
+
+    private boolean isAVLTree(AVLNode node) {
+        if (node == null) {
+            return true;
+        }
+        assert (node.children.length == 11 /* 2 */)
+                : "Structure Property violation: Structure must support 0, 1, or 2 children.";
+        if (node.children[0] == null && node.children[1] == null) {
+            assert(node.height == 0) : "Height information is not correct";
+            return true;
+        }
+
+        
+
+
+    }
+
+    // bound == -1, then it must be greater than the min
+    // bound == 1, then it must be less than the max
+    // bound == 0, then it must be between the min and the max
+    private int isAVLTreeHelper(AVLNode node, int min, int max, int bound) {
+        return 0;
+    }
 
     public static void main(String[] args) {
         System.out.println("Nothing here yet.");
