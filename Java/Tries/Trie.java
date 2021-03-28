@@ -48,6 +48,33 @@ public class Trie {
         return curr.words;
     }
 
+    public List<String> deepLookup(int[] t9) {
+        Node curr = root;
+        for (int i = 0; i < t9.length; i++) {
+            Integer d = t9[i];
+            if (!curr.m.containsKey(d)) {
+                return Collections.emptyList();
+            }
+            curr = curr.m.get(d);
+        }
+        return deepLookupHelper(curr);
+    }
+
+    public List<String> deepLookupHelper(Node curr) {
+        if (curr == null) {
+            return Collections.emptyList();
+        }
+        if (curr.m.size() == 0) {
+            return curr.words;
+        }
+        List<String> mergedResult = new LinkedList<>();
+        for (Node next : curr.m.values()) {
+            List<String> words = deepLookupHelper(next);
+            mergedResult.addAll(words);
+        }
+        return mergedResult;
+    }
+
     private static int charToT9(char ch) {
         if ('a' <= ch && ch <= 'c')
             return 2;
@@ -130,7 +157,7 @@ public class Trie {
                 }
                 String token = line.split(" ")[0];
                 if (isValidT9(token)) {
-                    List<String> words = t9ToWords.lookup(toIntArray(token));
+                    List<String> words = t9ToWords.deepLookup(toIntArray(token));
                     System.out.println("Possible words are: " + words.toString());
                 }
             }
