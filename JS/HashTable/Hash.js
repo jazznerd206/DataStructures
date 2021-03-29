@@ -1,15 +1,16 @@
 // HASH FOR STRINGS
 function hash(key, arrayLen) {
     let total = 0;
-    for (let char of key) {
+    for (i = 0; i < arrayLen; i++) {
         let char = key[i];
-        let value = char.charCodeAt(0) - 96;
+        let value = char.charCodeAt(0) - 'a'.charCodeAt(0);
         total = (total + value) % arrayLen
     } 
     return total;
 }
 
-// console.log(hash('pink', 10))
+// console.log(hash('pink', 4));
+// console.log(hash('abcdefghijklmnopqrstuvwxyz', 26));
 
 // not good because:
 // only hashes strings
@@ -20,16 +21,16 @@ function hash(key, arrayLen) {
 // IMPROVEMENT 1
 // add a maximum length of 100
 // add a prime number to increase distribution of hash
-    // reduces collisions of number after factoring
+    // reduces collisions of map placements after factoring
 function hash1(key, arrayLen) {
-    let total = 0;
+    let total = 7;
     let WEIRD_PRIME = 31;
     for (let i = 0; i < Math.min(key.length, 100); i++) {
         let char = key[i];
-        let value = char.charCodeAt(0) - 96;
-        total = (total * WEIRD_PRIME + value) % arrayLen
+        let value = char.charCodeAt(0) - 'a'.charCodeAt(0);
+        total += (total * WEIRD_PRIME + value) % arrayLen
     } 
     return total;
 }
 
-console.log(hash1('supercalafragilisticexpialadocious', 10))
+console.log(hash1('supercalafragilisticexpialadocious', 31))

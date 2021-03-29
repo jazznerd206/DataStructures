@@ -36,7 +36,7 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        int[] array = { 5, 2, 9, 7, 4, 1, 2345, 6, 3, 45, 8 };
+        int[] array = { 5, 2, 9, 7, 4, 1, 2345, 6, 3, 69, 8 };
         sort(array, 0, array.length - 1);
         print(array, array.length);
     }
