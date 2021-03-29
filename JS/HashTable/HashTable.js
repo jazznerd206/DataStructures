@@ -107,13 +107,12 @@ class HashTable {
 let table = new HashTable();
 table.set('fork','knife');
 table.set('wheel','tire');
-// table.set('love','hate');
-// table.set('peace','war');
+table.set('love','hate');
+table.set('peace','war');
 table.set('hello','world');
 table.set('chicken','parm');
-// table.set('chicken','chicken');
 console.log(table.keyMap);
-// console.log(table.keys()[1])
-// console.log(table.values())
 table.set('breakfast','sandwich');
 console.log(table.keyMap);
+console.log(table.get('chicken'));
+console.log(table.get('fork'));
