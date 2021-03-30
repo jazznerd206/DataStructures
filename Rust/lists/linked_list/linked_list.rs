@@ -125,6 +125,18 @@ where
     }
 }
 
+
+fn main() {
+    println!("Main function here.");
+    let mut list =  LinkedList::<String>::new();
+    println!("{}", list);
+    list.add("One".to_string());
+    list.add("Two".to_string());
+    list.add("Three".to_string());
+    println!("{}", list);
+    
+}
+
 // TESTS
 #[cfg(test)]
 mod tests {
