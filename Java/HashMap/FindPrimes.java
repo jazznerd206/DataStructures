@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.List;
 
 public class FindPrimes {
     public static void main(String[] args) {
