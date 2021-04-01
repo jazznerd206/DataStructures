@@ -9,12 +9,11 @@ By definition, trees are undirected graphs that:
 */
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class Graph {
     private int vCount;
     private Vertex root;
-    private HashMap nodes;
+    private HashMap<Integer, LinkedList> nodes;
 
     public Graph() {
         this.vCount = 0;
@@ -24,11 +23,20 @@ public class Graph {
 
     public class Vertex {
         private int value;
-        private LinkedList<Edge> adjList;
+        private LinkedList<Vertex> adjList;
 
         public Vertex(int value) {
             this.value = value;
             this.adjList = new LinkedList();
+        }
+
+        private boolean listHasValue(Vertex v) {
+            for (int i = 0; i < this.adjList.length; i++) {
+                if (this.adjList[i].equals(v)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
@@ -40,6 +48,32 @@ public class Graph {
             this.next = next;
             this.weight = w;
         }
+    }
+
+    /**
+     * 
+     * ADD EDGE this methods adds next vertex v2 to the adjacency list of vertex v1
+     * this.weight is the weight of vertex v2, the cost of traversing to that node
+     * 
+     */
+    public void addEdge(Vertex v1, Vertex v2) {
+        LinkedList adjList1 = v1.adjList;
+        int weight = v2.weight;
+        Vertex hasV2 = adjList1.listHasValue(v2);
+        if (hasV2 == false) {
+            // insert vertex v2 into list
+            // key = value
+            // value = weight
+            adjList1.add(v2);
+        }
+    }
+
+    public void addVertex(Vertex v) {
+        if (this.root == null) {
+            this.root = v;
+        }
+        this.nodes.put(v.value, new LinkedList());
+        this.vCount++;
     }
 
     public static void main(String[] args) {
