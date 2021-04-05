@@ -9,6 +9,7 @@ By definition, trees are undirected graphs that:
 */
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Graph {
     private int vCount;
@@ -23,16 +24,16 @@ public class Graph {
 
     public class Vertex {
         private int value;
-        private LinkedList<Vertex> adjList;
+        private LinkedList<Vertex> edgelist;
 
         public Vertex(int value) {
             this.value = value;
-            this.adjList = new LinkedList();
+            this.edgelist = new LinkedList();
         }
 
         private boolean listHasValue(Vertex v) {
-            for (int i = 0; i < this.adjList.length; i++) {
-                if (this.adjList[i].equals(v)) {
+            for (int i = 0; i < this.edgelist.length; i++) {
+                if (this.edgelist.contains(v)) {
                     return true;
                 }
             }
@@ -57,14 +58,14 @@ public class Graph {
      * 
      */
     public void addEdge(Vertex v1, Vertex v2) {
-        LinkedList adjList1 = v1.adjList;
+        LinkedList edgelist1 = v1.edgelist;
         int weight = v2.weight;
-        Vertex hasV2 = adjList1.listHasValue(v2);
+        Vertex hasV2 = edgelist1.listHasValue(v2);
         if (hasV2 == false) {
             // insert vertex v2 into list
             // key = value
             // value = weight
-            adjList1.add(v2);
+            edgelist1.add(v2);
         }
     }
 
