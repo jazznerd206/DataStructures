@@ -1,3 +1,8 @@
+
+/**
+ * THIS IS A TEMPLATE FOR AN UNWEIGHTED, BIDIRECTIONAL GRAPH
+ */
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -32,9 +37,6 @@ public class Graph {
         StringBuilder sb = new StringBuilder();
         for (Integer v : nodes.keySet()) {
             sb.append(v.toString() + ": ");
-            // for (int w : nodes.get(v)) {
-            // sb.append(String.valueOf(w) + " ");
-            // }
             LinkedList l = nodes.get(v);
             sb.append(l.toString());
             sb.append("\n");
@@ -47,16 +49,16 @@ public class Graph {
     public static void main(String[] args) {
         Graph g = new Graph();
         System.out.println("this is a graph.");
-        g.addEdge(1, 2, false);
-        g.addEdge(1, 3, false);
-        g.addEdge(3, 2, false);
-        g.addEdge(4, 2, false);
-        g.addEdge(4, 2, false);
-        g.addEdge(1, 1, false);
-        g.addEdge(5, 2, false);
-        g.addEdge(5, 3, false);
-        g.addEdge(5, 4, false);
-        g.addEdge(5, 5, false);
+        g.addEdge(1, 2, true);
+        g.addEdge(1, 3, true);
+        g.addEdge(3, 2, true);
+        g.addEdge(4, 2, true);
+        g.addEdge(4, 2, true);
+        g.addEdge(1, 1, true);
+        g.addEdge(5, 2, true);
+        g.addEdge(5, 3, true);
+        g.addEdge(5, 4, true);
+        g.addEdge(5, 5, true);
         System.out.println(g.toString());
     }
 
